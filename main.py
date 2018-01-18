@@ -19,7 +19,7 @@ import config as cfg
 import train
 import communicate as comm
 
-corpus_QA, pairs = load.prepareData('train')
+corpus_QA, pairs = load.prepareData('augmented_train')
 load.updateData(corpus_QA,'dict')
 
 """
