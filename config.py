@@ -9,7 +9,7 @@ PAD_token = 0
 SOS_token = 1
 EOS_token = 2
 
-MAX_LENGTH = 15
+MAX_LENGTH = 50
 
 eng_prefixes = (
     "i am ", "i m ",
@@ -24,7 +24,7 @@ USE_CUDA = torch.cuda.is_available()
 
 # Configure models
 attn_model = 'dot'
-hidden_size = 300
+hidden_size = 400
 n_layers = 2
 dropout = 0.1
 batch_size = 10
@@ -34,7 +34,7 @@ clip = 50.0
 teacher_forcing_ratio = 0.5
 learning_rate = 0.001
 decoder_learning_ratio = 5.0
-n_epochs = 300
+n_epochs = 1000
 epoch = 0
 plot_every = 20
 print_every = 100
