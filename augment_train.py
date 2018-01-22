@@ -5,7 +5,7 @@ random_ratio = 15 # 1 to 100
 shuffle_ratio = 20
 repetition = 10
 
-train_path = "train"
+train_path = "train0122"
 dict_path = "dict"
 
 def make_noise_list(train_path,dict_path):
@@ -25,6 +25,7 @@ def make_noise_list(train_path,dict_path):
 
     return noise_words
 
+
 def make_noise_sentences(noise_words,train_sentences):
     noise_sentences = []
     for sentence,answer in train_sentences:
@@ -41,7 +42,8 @@ def make_noise_sentences(noise_words,train_sentences):
         noise_sentences.append((noise_sentence,answer))
 
     return noise_sentences
-	
+
+
 def shuffle_words_in_sentence(noise_sentences):
     augmented_sentences = []
     for sentence, answer in noise_sentences:
@@ -51,6 +53,7 @@ def shuffle_words_in_sentence(noise_sentences):
         augmented_sentences.append((sentence,answer))
 
     return augmented_sentences
+
 
 def make_sentence_list(train_path):
     train_sentence = []
@@ -76,8 +79,6 @@ def main():
             augmented_sentences = shuffle_words_in_sentence(noise_sentences)
             for q,a in augmented_sentences:
                 fp.write("%s	%s\n" % (q,a.strip()))
-
-    
 
 
 if __name__=='__main__':
