@@ -32,9 +32,9 @@ batch_size = 40
 # Configure training/optimization
 clip = 50.0
 teacher_forcing_ratio = 0.5
-learning_rate = 0.001
+learning_rate = 0.0005
 decoder_learning_ratio = 5.0
-n_epochs = 1000
+n_epochs = 2000
 epoch = 0
 plot_every = 20
 print_every = 100
