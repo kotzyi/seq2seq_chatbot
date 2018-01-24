@@ -25,7 +25,7 @@ USE_CUDA = torch.cuda.is_available()
 # Configure models
 attn_model = 'dot'
 hidden_size = 500
-n_layers = 2
+n_layers = 3
 dropout = 0.1
 batch_size = 40
 
