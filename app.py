@@ -19,7 +19,7 @@ answer_dict = {}
 
 #@crossdomain(origin='*', headers='Content-Type, X-User, X-Token')
 @app.route('/api/v1.0/qa',methods=['GET'])
-def get_sentence():
+def get_qa():
     sentence = request.args.get('sentence')
     address = (TCP_IP,TCP_PORT)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,14 +36,14 @@ def get_sentence():
     print(answer)
     return answer
 
-@app.route('/api/v1.1/qa',methods=['GET'])
-def get_sentence():
-    sentence = request.args.get('sentence')
+@app.route('/api/v1.0/search',methods=['GET'])
+def get_search():
+    search = request.args.get('search')
     address = (TCP_IP,TCP_PORT)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(address)
 
-    send_question(s, sentence)
+    send_question(s, search)
     answer = recv_answer(s)
     try:
         answer = match_answer(answer)
