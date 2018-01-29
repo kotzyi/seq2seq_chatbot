@@ -58,7 +58,7 @@ def get_sentence():
 def get_json(answer):
     json_dict = []
     splited = answer.split(' ')
-	for s in splited:
+    for s in splited:
         s = s.split(':')[0]
         json_dict.append(s)
 
