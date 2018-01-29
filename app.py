@@ -6,11 +6,11 @@ import socket
 from flask_cors import CORS
 import re
 
-TCP_IP = "127.0.0.1"
-TCP_PORT = 5000
+TCP_IP = "121.134.144.52"
+TCP_PORT = 5005
 BUFFER_SIZE  = 4096
 
-Alpha = {'WGT':'1.8KG', 'VOL':'2L', 'TMP':'100c', 'WRM':'가능', 'TIM':'가능', 'MTR':'스테인레스', 'SIZ':'22x18x40'}
+#Alpha = {'WGT':'1.8KG', 'VOL':'2L', 'TMP':'100c', 'WRM':'가능', 'TIM':'가능', 'MTR':'스테인레스', 'SIZ':'22x18x40'}
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -21,7 +21,7 @@ answer_dict = {}
 @app.route('/api/v1.0/qa',methods=['GET'])
 def get_sentence():
     sentence = request.args.get('sentence')
-    address = ("121.134.144.52",5005)
+    address = (TCP_IP,TCP_PORT)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(address)
 
@@ -31,14 +31,46 @@ def get_sentence():
         answer = match_answer(answer)
     except:
         answer = "이해할 수 없는 단어가 있습니다."
-    #answer = recon_sentence(answer)
+    answer = "{\"answer\":\""+answer+"\"}"
     s.close()
     print(answer)
-    #answer =  jsonify({'answer': answer})
-    print("{\"answer\":\"",answer,"\"}")
-    answer = "{\"answer\":\""+answer+"\"}"
     return answer
 
+@app.route('/api/v1.1/qa',methods=['GET'])
+def get_sentence():
+    sentence = request.args.get('sentence')
+    address = (TCP_IP,TCP_PORT)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(address)
+
+    send_question(s, sentence)
+    answer = recv_answer(s)
+    try:
+        answer = match_answer(answer)
+    except:
+        answer = "이해할 수 없는 단어가 있습니다."
+    answer = "{\"answer\":\""+answer+"\"}"
+    s.close()
+    print(answer)
+    return answer
+
+
+def get_json(answer):
+    json_dict = []
+    splited = answer.split(' ')
+	for s in splited:
+        s = s.split(':')[0]
+        json_dict.append(s)
+
+    return json_dict
+
+def type_check(answer):
+    length = len(answer.split(' '))
+    
+    if length == 1:
+        return 1 #QA
+    else:
+        return 2 #Search
 
 #@app.errorhandler(404)
 #def not_found(error):
