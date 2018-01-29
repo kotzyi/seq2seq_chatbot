@@ -47,7 +47,7 @@ def make_noise_sentences(noise_words,train_sentences):
 def shuffle_words_in_sentence(noise_sentences):
     augmented_sentences = []
     for sentence, answer in noise_sentences:
-        if random.randrange(100) % random_ratio == 1:
+        if random.randrange(100) % shuffle_ratio == 1:
             random.shuffle(sentence)
         sentence = ' '.join(sentence)
         augmented_sentences.append((sentence,answer))
