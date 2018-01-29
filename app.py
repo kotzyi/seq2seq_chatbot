@@ -49,7 +49,8 @@ def get_sentence():
         answer = match_answer(answer)
     except:
         answer = "이해할 수 없는 단어가 있습니다."
-    answer = "{\"answer\":\""+answer+"\"}"
+    
+#answer = "{\"answer\":\""+answer+"\"}"
     s.close()
     print(answer)
     return answer
