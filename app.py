@@ -50,7 +50,6 @@ def get_sentence():
     except:
         answer = "이해할 수 없는 단어가 있습니다."
     
-#answer = "{\"answer\":\""+answer+"\"}"
     s.close()
     print(answer)
     return answer
