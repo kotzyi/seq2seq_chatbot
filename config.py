@@ -12,15 +12,6 @@ EOS_token = 2
 
 MAX_LENGTH = 50
 
-eng_prefixes = (
-    "i am ", "i m ",
-    "he is", "he s ",
-    "she is", "she s",
-    "you are", "you re ",
-    "we are", "we re ",
-    "they are", "they re "
-)
-
 USE_CUDA = torch.cuda.is_available()
 
 # Configure models
@@ -33,9 +24,9 @@ batch_size = 40
 # Configure training/optimization
 clip = 50.0
 teacher_forcing_ratio = 0.5
-learning_rate = 0.0005
+learning_rate = 0.00025
 decoder_learning_ratio = 5.0
-n_epochs = 2000
+n_epochs = 3000
 epoch = 0
 plot_every = 20
 print_every = 100

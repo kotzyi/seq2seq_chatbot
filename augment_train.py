@@ -25,7 +25,7 @@ def make_noise_list(train_path,dict_path):
             pass
 
     return noise_words
-
+#차후에 숫자를 문자로 바꾸어 처리하는 모듈을 삽입할 것!
 def exchange_number_in_sentence(sentence):
     r = str(random.randrange(1000))
     numbers = re.findall(r'\d+', sentence)
