@@ -2,8 +2,8 @@ import torch
 import time
 import math
 
-TCP_IP = '121.134.144.52'
-TCP_PORT = 5000
+TCP_IP = '121.134.144.52'#'10.214.35.36'
+TCP_PORT = 5005
 BUFFER_SIZE = 4096
 
 PAD_token = 0

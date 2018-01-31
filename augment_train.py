@@ -1,11 +1,12 @@
 import load
 import random
+import re
 
-random_ratio = 15 # 1 to 100
-shuffle_ratio = 20
-repetition = 10
+random_ratio = 10 # 1 to 100
+shuffle_ratio = 10
+repetition = 100
 
-train_path = "train0122"
+train_path = "search3"
 dict_path = "dict"
 
 def make_noise_list(train_path,dict_path):
@@ -25,6 +26,14 @@ def make_noise_list(train_path,dict_path):
 
     return noise_words
 
+def exchange_number_in_sentence(sentence):
+    r = str(random.randrange(1000))
+    numbers = re.findall(r'\d+', sentence)
+
+    for n in numbers:
+        sentence = sentence.replace(n,r)
+	
+    return sentence
 
 def make_noise_sentences(noise_words,train_sentences):
     noise_sentences = []
@@ -47,7 +56,7 @@ def make_noise_sentences(noise_words,train_sentences):
 def shuffle_words_in_sentence(noise_sentences):
     augmented_sentences = []
     for sentence, answer in noise_sentences:
-        if random.randrange(100) % shuffle_ratio == 1:
+        if random.randrange(100) % shuffle_ratio == 101:
             random.shuffle(sentence)
         sentence = ' '.join(sentence)
         augmented_sentences.append((sentence,answer))
@@ -62,6 +71,7 @@ def make_sentence_list(train_path):
         lines = fp.readlines()
 	
     for line in lines:
+        line = exchange_number_in_sentence(line)
         sentence,answer = line.split('	')
         train_sentence.append((sentence,answer))
 
