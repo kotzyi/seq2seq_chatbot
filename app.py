@@ -138,4 +138,4 @@ def recon_sentence(sentence):
 
 if __name__ == '__main__':
     make_answer_dict(filename)
-    app.run(host="10.214.35.36")
+    app.run(host="0.0.0.0")#app.run(host="10.214.35.36")
