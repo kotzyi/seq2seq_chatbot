@@ -18,7 +18,7 @@ TCP_PORT = 5005
 
 @app.route('/api/v1.1/chat',methods=['GET'])
 def get_sentence():
-	try:
+    try:
         qa = request.args.get('sentence')
         address = (TCP_IP,TCP_PORT)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -38,45 +38,6 @@ def get_sentence():
     s.close()
     print(answer)
     return answer
-
-@app.route('/api/v1.0/search',methods=['GET'])
-def get_search():
-    search = request.args.get('search')
-    address = (TCP_IP,TCP_PORT)
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(address)
-
-    send_question(s, search)
-    answer = recv_answer(s)
-    try:
-        pass#answer = match_answer(answer)
-    except:
-        answer = "이해할 수 없는 단어가 있습니다."
-    
-    s.close()
-    print(answer)
-    return answer
-
-"""
-# for upgrading search function; this will handle specific number of volume and the number of product
-@app.route('/api/v1.1/search',methods=['GET'])
-def get_search():
-    search = request.args.get('search')
-    address = (cfg.TCP_IP,cfg.TCP_PORT)
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(address)
-
-    send_question(s, search)
-    answer = recv_answer(s)
-    try:
-        answer = match_answer(answer)
-    except:
-        answer = "이해할 수 없는 단어가 있습니다."
-
-    s.close()
-    print(answer)
-    return answer
-"""
 
 def get_json(answer):
     json_dict = []
