@@ -30,7 +30,7 @@ def get_sentence():
     try:
         answer = match_answer(answer)
         if answer[:1] != '{':
-            answer = "{\"answer\":\""+answer+"\"}"
+            answer = "{\"answer\":\""+answer.rstrip('\n')+"\"}"
             
     except:
         answer = "이해할 수 없는 단어가 있습니다."
