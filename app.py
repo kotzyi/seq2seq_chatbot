@@ -100,24 +100,6 @@ def recv_answer(sock):
     a = a.decode()
     return a
 
-def recon_sentence(sentence):
-    words = []
-    sentence = sentence.split(' ')
-
-    for s in sentence:
-        w = s.split(":")
-        print (w)
-        try:
-            if w[1] != 'Punctuation':
-                if w[1] == 'Alpha':
-                    w[0] = Alpha[w[0]]
-
-                words.append(w[0])
-        except:
-            pass
-
-    return ' '.join(words)
-
 def sub_numbers_to_char(s):
     """
     substitue numbers in sentence to random character
