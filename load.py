@@ -9,6 +9,9 @@ import config as cfg
 import w2v
 
 class Corpus:
+    """
+    This class stores words and provides some methods that handle the words
+    """
     def __init__(self, name):
         self.name = name
         self.trimmed = False	
@@ -19,7 +22,6 @@ class Corpus:
 
     def addSentence(self, sentence):
         for word in w2v.tokenize(sentence):
-#for word in sentence.split(' '):
             self.addWord(word)
 
     def addWord(self, word):
@@ -62,9 +64,7 @@ def unicodeToAscii(s):
     )
 
 def normalizeString(s):
-#s = unicodeToAscii(s.lower().strip())
     s = re.sub(r"([.!?])", r" \1", s)
-#s = re.sub(r"[^a-zA-Z.!?]+", r" ", s)
     return s
 
 def readLangs(corpus):

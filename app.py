@@ -38,22 +38,18 @@ def get_sentence():
             
     except:
         answer = "이해할 수 없는 단어가 있습니다."
-	
-    if answer[:1] != '{':
-        answer = "{\"answer\":\""+answer.rstrip('\n')+"\"}"
-	
-    s.close()
+
+    try:
+        if answer[:1] != '{':
+            answer = "{\"answer\":\""+answer.rstrip('\n')+"\"}"
+        s.close()
+
+    except:
+        s.close()
+        answer = "{\"answer\":\""+"통신 상의 문제가 있습니다.\"}"
+
     print(answer)
     return answer
-
-def get_json(answer):
-    json_dict = []
-    splited = answer.split(' ')
-    for s in splited:
-        s = s.split(':')[0]
-        json_dict.append(s)
-
-    return json_dict
 
 def type_check(answer):
     """
@@ -77,7 +73,7 @@ def match_answer(code):
 
 def make_answer_dict(filename):
     """
-    make answer dict with answer.txt file
+    make answer dictionary with answer.txt file
     """
     with open(filename,'r',encoding='utf-8') as fp:
         lines = fp.readlines()
@@ -100,7 +96,7 @@ def recv_answer(sock):
     a = a.decode()
     return a
 
-def sub_numbers_to_char(s):
+def substitue_numbers(s):
     """
     substitue numbers in sentence to random character
     ex) 2L 백산수 검색해줘 -> X L 백산수 검색해줘
@@ -109,7 +105,7 @@ def sub_numbers_to_char(s):
 
     for number in numbers:
         letter = random.choice(string.letters)
-        s.replace(letter,number)
+        s = s.replace(letter,number)
 
     return s
     

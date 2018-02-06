@@ -6,6 +6,7 @@ import string
 import re
 import random
 import time
+import sconce
 
 import torch
 import torch.nn as nn
@@ -22,24 +23,6 @@ import communicate as comm
 corpus_QA, pairs = load.prepareData('augmented_train')
 load.updateData(corpus_QA,'dict')
 
-"""
-encoder1 = models.EncoderRNN(corpus_QA.n_words, cfg.hidden_size)
-#attn_decoder1 = models.AttnDecoderRNN(cfg.hidden_size, corpus_QA.n_words,1, dropout_p=cfg.dropout_p)
-attn_decoder1 = models.LuongAttnDecoderRNN('general',cfg.hidden_size, corpus_QA.n_words, 2)
-
-if cfg.use_cuda:
-    encoder1 = encoder1.cuda()
-    attn_decoder1 = attn_decoder1.cuda()
-
-train.trainIters(encoder1, attn_decoder1, corpus_QA, pairs, n_iters=2000, print_every=200)
-
-while True:
-    s = input("Q: ")
-    s = s.strip()
-    pairs = [[s,' ']]
-    print(pairs)
-    train.evaluateRandomly(encoder1, attn_decoder1, corpus_QA, pairs, n=1)
-"""
 # Initialize models
 encoder = models.EncoderRNN(corpus_QA.n_words, cfg.hidden_size, cfg.n_layers, dropout=cfg.dropout)
 decoder = models.LuongAttnDecoderRNN(cfg.attn_model, cfg.hidden_size, corpus_QA.n_words, cfg.n_layers, dropout=cfg.dropout)
@@ -54,7 +37,6 @@ if cfg.USE_CUDA:
     encoder.cuda()
     decoder.cuda()
 
-import sconce
 job = sconce.Job('seq2seq-translate', {
     'attn_model': cfg.attn_model,
     'n_layers': cfg.n_layers,
@@ -124,11 +106,3 @@ while True:
     print(s)
     connection.send(addr, s.encode())
 
-
-"""
-while True:
-    s = input("Q: ")
-    s = s.strip()
-    pairs = [s,' ']
-    train.evaluateRandomly(encoder, decoder, corpus_QA, pairs)
-"""

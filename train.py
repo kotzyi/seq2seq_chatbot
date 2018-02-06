@@ -10,7 +10,6 @@ from masked_cross_entropy import *
 
 import config as cfg
 import w2v
-import plot
 
 # Pad a with the PAD symbol
 def pad_seq(seq, max_length):
@@ -48,7 +47,6 @@ def random_batch(corpus_QA, pairs, batch_size):
 
 def indexesFromSentence(corpus, sentence):
     return [corpus.word2index[word] for word in w2v.tokenize(sentence)] + [cfg.EOS_token]
-    #return [corpus.word2index[word] for word in sentence.split(' ')] + [cfg.EOS_token]
 
 def variableFromSentence(corpus, sentence):
     indexes = indexesFromSentence(corpus, sentence)
@@ -77,9 +75,7 @@ def timeSince(since, percent):
     return '%s (- %s)' % (asMinutes(s), asMinutes(rs))
 
 def evaluateRandomly(encoder, decoder, corpus_QA, pairs, n=1):
-#pair = random.choice(pairs)
     print('>', pairs[0])
-#print('=', pair[0])
     try:
         output_words, attentions = evaluate(encoder, decoder, corpus_QA, pairs[0])
         output_sentence = ' '.join(output_words)
@@ -87,45 +83,6 @@ def evaluateRandomly(encoder, decoder, corpus_QA, pairs, n=1):
         output_sentence = '이해 할 수 없는 단어가 있습니다'
 
     return output_sentence
-
-"""
-def evaluate(encoder, decoder, corpus_QA, sentence, max_length=cfg.MAX_LENGTH):
-    input_variable = variableFromSentence(corpus_QA, sentence)
-    input_length = input_variable.size()[0]
-    encoder_hidden = encoder.initHidden()
-
-    encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
-    encoder_outputs = encoder_outputs.cuda() if cfg.use_cuda else encoder_outputs
-
-    for ei in range(input_length):
-        encoder_output, encoder_hidden = encoder(input_variable[ei], encoder_hidden)
-        encoder_outputs[ei] = encoder_outputs[ei] + encoder_output[0][0]
-
-    decoder_input = Variable(torch.LongTensor([[cfg.SOS_token]]))  # SOS
-    decoder_input = decoder_input.cuda() if cfg.use_cuda else decoder_input
-
-    decoder_hidden = encoder_hidden
-
-    decoded_words = []
-    decoder_attentions = torch.zeros(max_length, max_length)
-
-    for di in range(max_length):
-        decoder_output, decoder_hidden, decoder_attention = decoder(
-            decoder_input, decoder_hidden, encoder_outputs)
-        decoder_attentions[di] = decoder_attention.data
-        topv, topi = decoder_output.data.topk(1)
-        ni = topi[0][0]
-        if ni == cfg.EOS_token:
-            decoded_words.append('<EOS>')
-            break
-        else:
-            decoded_words.append(corpus_QA.index2word[ni])
-
-        decoder_input = Variable(torch.LongTensor([[ni]]))
-        decoder_input = decoder_input.cuda() if cfg.use_cuda else decoder_input
-
-    return decoded_words, decoder_attentions[:di + 1]
-"""
 
 def evaluate(encoder, decoder, corpus_QA, input_seq, max_length=cfg.MAX_LENGTH):
     input_seq = [indexesFromSentence(corpus_QA, input_seq)]
@@ -227,59 +184,3 @@ def train(input_batches, input_lengths, target_batches, target_lengths, encoder,
     decoder_optimizer.step()
     
     return loss.data[0], ec, dc
-"""
-def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, max_length=cfg.MAX_LENGTH):
-    encoder_hidden = encoder.initHidden()
-
-    encoder_optimizer.zero_grad()
-    decoder_optimizer.zero_grad()
-
-    input_length = input_variable.size()[0]
-    target_length = target_variable.size()[0]
-
-    encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
-    encoder_outputs = encoder_outputs.cuda() if cfg.use_cuda else encoder_outputs
-
-    loss = 0
-
-    for ei in range(input_length):
-        encoder_output, encoder_hidden = encoder(input_variable[ei], encoder_hidden)
-        encoder_outputs[ei] = encoder_output[0][0]
-
-    decoder_input = Variable(torch.LongTensor([[cfg.SOS_token]]))
-    decoder_input = decoder_input.cuda() if cfg.use_cuda else decoder_input
-
-    decoder_hidden = encoder_hidden
-
-    use_teacher_forcing = True if random.random() < cfg.teacher_forcing_ratio else False
-
-    if use_teacher_forcing:
-        # Teacher forcing: Feed the target as the next input
-        for di in range(target_length):
-            decoder_output, decoder_hidden, decoder_attention = decoder(
-                decoder_input, decoder_hidden, encoder_outputs)
-            loss += criterion(decoder_output, target_variable[di])
-            decoder_input = target_variable[di]  # Teacher forcing
-
-    else:
-        # Without teacher forcing: use its own predictions as the next input
-        for di in range(target_length):
-            decoder_output, decoder_hidden, decoder_attention = decoder(
-                decoder_input, decoder_hidden, encoder_outputs)
-            topv, topi = decoder_output.data.topk(1)
-            ni = topi[0][0]
-
-            decoder_input = Variable(torch.LongTensor([[ni]]))
-            decoder_input = decoder_input.cuda() if cfg.use_cuda else decoder_input
-
-            loss += criterion(decoder_output, target_variable[di])
-            if ni == cfg.EOS_token:
-                break
-
-    loss.backward()
-
-    encoder_optimizer.step()
-    decoder_optimizer.step()
-
-    return loss.data[0] / target_length
-"""
